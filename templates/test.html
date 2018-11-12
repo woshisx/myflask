@@ -1,0 +1,48 @@
+{% extends 'head.html' %}
+{% block body %}
+<!--框架页面：页面刷新.html-->
+ <a class="navbar-brand" href="#" onclick="test(this)" id="1" style="float: left"><img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>
+    <br>
+    <div id="test">
+    <a href="index.html">
+    <img  src="../static/images/f-10wMyR8BA.gif">
+        <br>
+        <img  src="../static/images/d-XbjFn3aqE.gif">
+        <br>
+        <img  src="../static/images/d-XbjFn3aqE.gif">
+        <br>
+        <img  src="../static/images/d-XbjFn3aqE.gif">
+        <br>
+        <img  src="../static/images/f-10wMyR8BA.gif">
+        <br>
+        <img  src="../static/images/f-10wMyR8BA.gif">
+        <br>
+        <img  src="../static/images/f-10wMyR8BA.gif">
+        <br>
+        <img  src="../static/images/f-10wMyR8BA.gif">
+        <br>
+        <img  src="../static/images/f-10wMyR8BA.gif">
+    </a>
+    </div>
+    <script>
+        function test(obj){
+            var a = $(obj).attr('id');
+            var x = $(obj).next().next();
+            var A = {a:1,b:2,c:3,d:"hello world"};
+
+            {#x.find('a').attr('href',"test.html") ;#}
+            {#x.find('img').attr('src' , "../static/images/d-XbjFn3aqE.gif");#}
+            document.body.parentNode.style.overflowY = "hidden";
+            $("body").parent().css("overflow-y","hidden");
+        }
+        String.prototype.format = function() {
+		if(arguments.length === 0) return this;
+		var obj = arguments[0];
+		var s = this;
+		for(var key in obj) {
+			s = s.replace(new RegExp("\\{" + key + "\\}", "g"), obj[key]);
+		}
+		return s;
+	}
+     </script>
+{% endblock %}

@@ -1,0 +1,123 @@
+
+<style type="text/css">
+        #header {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            padding: 0;
+            {#text-align: center;#}
+
+        }
+        .wrapper {
+            position:absolute;
+
+            top: 80px;
+            bottom: 50px;
+            left: 20px;
+            width: 100%;
+            {#background: #f8f8f9;#}
+        }
+
+        .wrapper ul {
+            margin: 0px;
+            padding: 0 10px;
+        }
+
+        .m-item {
+            position: relative;
+            {#height: 300px;#}
+            padding: 10px;
+            list-style: none
+        }
+        .mCustomScrollBox{overflow: unset;}
+        .mCSB_container{overflow: unset;}
+        </style>
+
+    <body>
+    <div id="header">{% include 'head.html' %}</div>
+        <div id="wrapper" class="wrapper">
+            <ul id="m-list">
+            </ul>
+        </div>
+        <div class="footer"></div>
+        <script src="../static/iscroll_5.2.0/iscroll.js"></script>
+<script type="text/javascript">
+        $(function() {
+            var dom = {
+                wrapper: $('#wrapper'),
+                list: $('#m-list')
+            }
+            var dic = eval({{dic|safe}});
+            var html = '';
+            var count = 10;
+
+            for (var i = 0 ; i < 10 && i<dic.main_info.length; i++) {
+                html += '<li class="m-item">';
+
+                   html += '<a href="/watch?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank">' +
+                    '<div class="media" style="width: 1000px;height: 240px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                    '<img class="mr-3" src="../static/' + dic.main_info[i].thumbnail + '" style="width: 360px;height: 240px">' +
+                    '<div class="media-body">' +
+                    '<h5 class="mt-0">' + dic.main_info[i].title.slice(0,100) + '</h5>' +
+                    '<p style="font-size: large" class="card-text">'  + ' | 时长 : ' + dic.main_info[i].duration.hour + '</p>' +
+                    '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[i].view_count + '</cite> 次观看 | ' + dic.main_info[i].upload_date + '</footer>' +
+                    '</div></div></a>';
+
+                      html += '</li>';
+
+            }
+            dom.list.html(html);
+
+            function scrollEndFn () {
+                if (this.y - 200 < this.maxScrollY && (this.directionY === 1) && count < dic.main_info.length) {
+                    console.log('滚动到底部');
+                    var html = '';
+                    for (var i = 0 ; i < 5; i++) {
+                        html += '<li class="m-item">';
+                        html +=
+                            '<a href="/watch?id=' + dic.main_info[count].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank">' +
+                            '<div class="media" style="width: 1000px;height: 240px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                            '<img class="mr-3" src="../static/' + dic.main_info[count].thumbnail + '" style="width: 360px;height: 240px">' +
+                            '<div class="media-body">' +
+                            '<h5 class="mt-0">' + dic.main_info[count].title.slice(0,100) + '</h5>' +
+                            '<p style="font-size: large" class="card-text">'  + ' | 时长 : ' + dic.main_info[count].duration.hour + '</p>' +
+                            '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[count].view_count + '</cite> 次观看 | ' + dic.main_info[count].upload_date + '</footer>' +
+                            '</div></div></a>';
+                        html += '</li>';
+                        count++
+                    }
+                    dom.list.append(html);
+                    if (myScroll) {
+                        myScroll.refresh();
+                    }
+                }
+            }
+            myScroll = new IScroll('#wrapper', {
+                click: true,        //支持点击
+                scrollbars: false,   //显示滚轮
+                mouseWheel: true,   //鼠标滚轮可以滚动
+                interactiveScrollbars:true,  //滚动条可以拖动
+                preventDefault: false, //禁止阻止浏览器默认行为，可以选择文字
+            });
+            myScroll.on('scrollEnd', scrollEndFn);
+        });
+
+function setover(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.gif'
+}
+
+function setout(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.jpg'
+}
+        </script>
+
+    </body>
+

@@ -1,0 +1,82 @@
+{% extends 'head.html' %}
+<title>{{ vi_dic['main_info']['title'] }} - Mixwheel</title>
+{% block body %}
+<div style="margin-left: 40px;margin-right: 0px;margin-top: 10px">
+  <div class="row" style="width: 100%">
+{#    <div class="col" style="flex-grow: 0">#}
+    <div class="col-8">
+        {% include 'video_win.html' %}
+        <div>
+            <div class="row">
+                <h1 style="width: auto;margin-top: 50px;color: #333333">{{vi_dic['main_info']['title'][:50] }}</h1>
+            </div>
+            <div class="row">
+            <h2 class = "text-muted">{{ vi_dic['main_info']['view_count'] }} 次观看</h2>
+                </div>
+            <div class="row">
+                {% if vi_dic['main_info']['creator']  %}
+                 <h2 style="margin-top: 30px;color: #333333">{{vi_dic['main_info']['creator'][:50] }}</h2>
+                {% endif %}
+                {% if not vi_dic['main_info']['creator'] %}
+                    <h4 style="margin-top: 30px;color: #333333">创作者:未公布</h4>
+                {% endif %}
+                </div>
+        <div class="row">
+        <p class = "text-muted" style="font-size: large">{{ vi_dic['main_info']['upload_date'] }} 发布</p>
+         <p class="blockquote" style="margin-top: 10px">{{vi_dic['main_info']['description'] }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+    {% if vi_dic['main_info']['playlist']|length > 1  %}
+     <div class="card" style="height: 618px;margin-bottom: 10px">
+  <ul class="list-group list-group-flush">
+      <li class="list-group-item" style="height: 80px;background-color:#fafafa"><h2>{{ vi_dic['main_info']['categories'][0] }}</h2></li>
+    <li class="list-group-item" style="background-color:#fafafa;height: 518px;padding-right: 0px">
+       <div data-spy="scroll"  class="pre-scrollable" style="max-height: 500px;">
+       {% for each in vi_dic['playlist_info'] %}
+        <a href="{{ url_for('video',id = each['video_id'])}}" style="text-decoration:none;color: #1b1e21">
+        <div class="media" style="margin-bottom: 5px;height: 160px" onmouseover="setover(this)" onmouseout="setout(this)">
+            <img class="mr-3" src="{{ url_for('static', filename= each['thumbnail']) }}" style="width: 240px">
+            <div class="media-body">
+                <h5 class="mt-0">{{ each['title'][:40] }}..</h5>
+                <p style="margin-top: 5px">时长 : {{ each['duration']['hour']}}</p>
+                <p><em>{{ each['view_count'] }} 次观看</em></p>
+            </div>
+            </div>
+            </a>
+        {% endfor %}
+        </div>
+    </li>
+  </ul>
+    </div>
+    {% endif %}
+    {% for each in vi_dic['relate_info'] %}
+        <a href="{{ url_for('video',id = each['video_id'])}}" style="text-decoration:none;color: #1b1e21">
+            <div class="media" style="margin-bottom: 10px" onmouseover="setover(this)" onmouseout="setout(this)">
+                    <img class="mr-3" src="{{ url_for('static', filename= each['thumbnail']) }}" style="width: 240px;height: 160px">
+                <div class="media-body">
+                    <h5 class="mt-0">{{ each['title'][:80] }}..</h5>
+                    <p style="margin-top: 10px">时长 : {{ each['duration']['hour']}}</p>
+                    <p><em>{{ each['view_count'] }} 次观看</em></p>
+                </div>
+                </div>
+                </a>
+            {% endfor %}
+    </div>
+  </div>
+
+</div>
+    <script type="text/javascript">
+    function setover(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.gif'
+    }
+    function setout(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.jpg'
+    }
+    </script>
+{% endblock %}

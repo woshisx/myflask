@@ -1,0 +1,184 @@
+
+<style type="text/css">
+        #header {
+            position: absolute;
+            z-index: 2;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            padding: 0;
+            {#text-align: center;#}
+
+        }
+        .wrapper {
+            position:absolute;
+            margin-top: 5px;
+            top: 80px;
+            bottom: 50px;
+            right: 0;
+            width: 100%;
+            {#background: #f8f8f9;#}
+        }
+
+        .wrapper ul {
+            margin: 0px;
+            padding: 0 10px;
+        }
+
+        .m-item {
+            position: relative;
+            {#height: 300px;#}
+            padding: 10px;
+            list-style: none
+        }
+        .mCustomScrollBox{overflow: unset;}
+        .mCSB_container{overflow: unset;}
+        </style>
+
+    <body>
+    <div id="header">{% include 'head.html' %}</div>
+        <div id="wrapper" class="wrapper">
+            <ul id="m-list">
+            </ul>
+        </div>
+        <div class="footer"></div>
+        <script src="../static/iscroll_5.2.0/iscroll.js"></script>
+<script type="text/javascript">
+    var dic = eval({{dic|safe}});
+     $(function() {
+            document.body.parentNode.style.overflowY = "hidden";
+            $("body").parent().css("overflow-y","hidden");
+            var dom = {
+                wrapper: $('#wrapper'),
+                list: $('#m-list')
+            };
+            var html = '';
+            var count = 5;
+
+            for (var i = 0 ; i < 5; i++) {
+                html += '<li class="m-item">'+
+                        '<h1 class="display-5">'+ dic.main_list[i][0].categories +'</h1>'+
+                         '<a class="navbar-brand" href="#" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
+                        '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
+                         '<br>'+ ' <div class="row">';
+                    for (var j = 0 ; j < 5; j++) {
+                       html +=
+                           '<a href="/watch?id=' + dic.main_list[i][j].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">'  +
+                        '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                        '<img class="card-img-top" src="../static/' + dic.main_list[i][j].thumbnail + '" style="height: 220px;">' +
+                        '<div class="card-body">' +
+                        '<h5 class="card-title">' + dic.main_list[i][j].title.slice(0,50) + '</h5>' +
+                        '<p style="font-size: large" class="card-text">' + ' | 时长 : ' + dic.main_list[i][j].duration.hour + '</p>' +
+                        '<footer class="blockquote-footer" style="font-size: medium">' + dic.main_list[i][j].view_count + ' 次观看 | ' + dic.main_list[i][j].upload_date + '</footer>' +
+                        '</div></div></a>'
+                         }
+                          html +=  '</div>'+
+                             '</li>'
+
+            }
+            dom.list.html(html);
+
+            function scrollEndFn () {
+                if (this.y -100 < this.maxScrollY && (this.directionY === 1) && count < dic.main_list.length) {
+                    console.log('滚动到底部');
+                    var html = '';
+                    for (var i = 0 ; i < 1; i++) {
+                        html += '<li class="m-item">'+
+                                '<h1 class="display-5">'+ dic.main_list[count][0].categories +'</h1>'
+                                + '<a class="navbar-brand" href="#" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
+                                '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
+                                +'<br>'+ ' <div class="row">';
+                    for (var j = 0 ; j < 5; j++) {
+                        var data = {
+                            video_id: dic.main_list[count][j].video_id,
+                            thumbnail : dic.main_list[count][j].thumbnail,
+                            title : dic.main_list[count][j].title.slice(0,50),
+                            duration : dic.main_list[count][j].duration.hour,
+                            view_count : dic.main_list[count][j].view_count,
+                            upload_date : dic.main_list[count][j].upload_date
+                        };
+                        var temp =
+                        '<a href="/watch?id={video_id}" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">' +
+                        '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                        '<img class="card-img-top" src="../static/{thumbnail}" style="height: 220px;">' +
+                        '<div class="card-body">' +
+                        '<h5 class="card-title">{title}</h5>' +
+                        '<p style="font-size: large" class="card-text"> | 时长 : {duration}</p>' +
+                        '<footer class="blockquote-footer" style="font-size: medium">{view_count} 次观看 | {upload_date}</footer>' +
+                        '</div></div></a>';
+                        html += temp.format(data);
+                    }
+                        html += '</div>'+'</li>';
+                        count++
+                    }
+
+                    dom.list.append(html);
+                    if (myScroll) {
+                        myScroll.refresh();
+                    }
+                }
+            }
+            myScroll = new IScroll('#wrapper', {
+                click: true,        //支持点击
+                scrollbars: false,   //显示滚轮
+                mouseWheel: true,   //鼠标滚轮可以滚动
+                interactiveScrollbars:true,  //滚动条可以拖动
+                preventDefault: true, //禁止阻止浏览器默认行为，可以选择文字
+            });
+            myScroll.on('scrollEnd', scrollEndFn);
+
+
+        });
+
+function setover(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.gif'
+}
+
+function setout(obj) {
+    var first=obj.firstElementChild;
+    var temp_img = first.src.slice(0, -4);
+    first.src = temp_img + '.jpg'
+}
+
+function exchange(obj){
+            var index = $(obj).attr('id');
+            var a = $(obj).next().next().children("a");
+            var i = 0;
+             a.each(function(){
+                var item_index = $(this).attr('id');
+                item_index = Number(item_index)+5;
+                if(item_index > dic.main_list[index].length-1){
+                    item_index = i;
+                    i++;
+                }
+                $(this).attr({
+                    'href':'/watch?id='+ dic.main_list[index][item_index].video_id,
+                    'id': item_index
+                });
+                $(this).find('img').attr('src','../static/'+ dic.main_list[index][item_index].thumbnail);
+                $(this).find('h5').text(dic.main_list[index][item_index].title.slice(0,50));
+                $(this).find('p').text(' | 时长 : '+ dic.main_list[index][item_index].duration.hour);
+                if(dic.main_list[index][item_index].view_count === null) {
+                    $(this).find('footer').text('0 次观看 | ' + dic.main_list[index][item_index].upload_date);
+                }
+            });
+        }
+
+String.prototype.format = function() {
+		if(arguments.length === 0) return this;
+		var obj = arguments[0];
+		var s = this;
+		for(var key in obj) {
+			s = s.replace(new RegExp("\\{" + key + "\\}", "g"), obj[key]);
+		}
+		return s;
+	}
+
+        </script>
+
+    </body>
+
