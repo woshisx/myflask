@@ -114,10 +114,11 @@ def video():
     main_info = db.col.find_one({'video_id':id},{'_id': 0 })
     playlist_info = []
     temp_list = []
-    for each in main_info['playlist']:
-        temp = db.col.find_one({'video_id': each},{'_id': 0 })
-        if temp:
-            playlist_info.append(temp)
+    if main_info['playlist']:
+        for each in main_info['playlist']:
+            temp = db.col.find_one({'video_id': each},{'_id': 0 })
+            if temp:
+                playlist_info.append(temp)
     relate = db.col.find({'categories':main_info['categories']},{'_id': 0})
     for each in relate:
         temp_list.append(each)
@@ -158,33 +159,40 @@ def index():
     return render_template('index.html',title='欢迎来到MixWheel',dic = dic)
 
 @app.route('/delete',methods=['GET','POST'])
+@login_required
 def delete():
-    id = request.args.get('id')
-    try:
-        os.remove('./myweb/static/images/%s.gif'%id)
-    except:
-        pass
-    try:
-        os.remove('./myweb/static/images/%s.jpg'%id)
-    except:
-        pass
-    try:
-        os.remove('./myweb/static/video/%s.mp4'%id)
-    except:
-        pass
-    db.col.remove({'video_id': id})
-    return id+' deleted'
+    if current_user.get_id() == 'admin':
+        id = request.args.get('id')
+        try:
+            os.remove('./myweb/static/images/%s.gif'%id)
+        except:
+            pass
+        try:
+            os.remove('./myweb/static/images/%s.jpg'%id)
+        except:
+            pass
+        try:
+            os.remove('./myweb/static/video/%s.mp4'%id)
+        except:
+            pass
+        db.col.remove({'video_id': id})
+        return id+' deleted'
+    else:
+        return 'bye-bye'
 
 @app.route('/admin',methods=['GET','POST'])
+@login_required
 def admin():
-    main_info = []
-    dic = {}
-    randint = random.randint(0, 10)
-    for each in db.col.find({'random': {'$gte': randint, '$lte': randint+90}},{'_id': 0}):
-        main_info.append(each)
-    dic['main_info'] = main_info
-    dic = json.dumps(dic)
-    return render_template('admin_video.html', dic=dic)
+    if current_user.get_id() == 'admin':
+        main_info = []
+        dic = {}
+        for each in db.col.find():
+            main_info.append(each)
+        dic['main_info'] = main_info
+        dic = json.dumps(dic)
+        return render_template('admin_video.html', dic=dic)
+    else:
+        return 'bye-bye'
 
 @app.route('/register',methods=['GET','POST'])
 def signup():

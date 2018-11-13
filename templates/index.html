@@ -56,18 +56,17 @@
             };
             var html = '';
             var count = 5;
-
             for (var i = 0 ; i < 5; i++) {
                 html += '<li class="m-item">'+
                         '<h1 class="display-5">'+ dic.main_list[i][0].categories +'</h1>'+
-                         '<a class="navbar-brand" href="#" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
-                        '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
+                         '<a class="navbar-brand" href="" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
+                        '<img class="rounded-circle" src="http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
                          '<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                        html +=
                            '<a href="/watch?id=' + dic.main_list[i][j].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">'  +
                         '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
-                        '<img class="card-img-top" src="../static/' + dic.main_list[i][j].thumbnail + '" style="height: 220px;">' +
+                        '<img class="card-img-top" src="' + dic.main_list[i][j].thumbnail + '" style="height: 220px;">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">' + dic.main_list[i][j].title.slice(0,50) + '</h5>' +
                         '<p style="font-size: large" class="card-text">' + ' | 时长 : ' + dic.main_list[i][j].duration.hour + '</p>' +
@@ -87,8 +86,8 @@
                     for (var i = 0 ; i < 1; i++) {
                         html += '<li class="m-item">'+
                                 '<h1 class="display-5">'+ dic.main_list[count][0].categories +'</h1>'
-                                + '<a class="navbar-brand" href="#" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
-                                '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
+                                + '<a class="navbar-brand" href="" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
+                                '<img class="rounded-circle" src="http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
                                 +'<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                         var data = {
@@ -102,7 +101,7 @@
                         var temp =
                         '<a href="/watch?id={video_id}" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">' +
                         '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
-                        '<img class="card-img-top" src="../static/{thumbnail}" style="height: 220px;">' +
+                        '<img class="card-img-top" src="{thumbnail}" style="height: 220px;">' +
                         '<div class="card-body">' +
                         '<h5 class="card-title">{title}</h5>' +
                         '<p style="font-size: large" class="card-text"> | 时长 : {duration}</p>' +
@@ -159,7 +158,7 @@ function exchange(obj){
                     'href':'/watch?id='+ dic.main_list[index][item_index].video_id,
                     'id': item_index
                 });
-                $(this).find('img').attr('src','../static/'+ dic.main_list[index][item_index].thumbnail);
+                $(this).find('img').attr('src',dic.main_list[index][item_index].thumbnail);
                 $(this).find('h5').text(dic.main_list[index][item_index].title.slice(0,50));
                 $(this).find('p').text(' | 时长 : '+ dic.main_list[index][item_index].duration.hour);
                 if(dic.main_list[index][item_index].view_count === null) {

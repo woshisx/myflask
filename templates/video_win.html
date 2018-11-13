@@ -1,7 +1,6 @@
 {% block video_main %}
 		<script type="text/javascript" src="../static/ckplayer/ckplayer/ckplayer.js" charset="UTF-8"></script>
-
-{#		<div id="video" style="width: 1100px; height: 618px;"></div>#}
+     
          <div id="video" style="width: auto; height: auto;"></div>
 		<script type="text/javascript">
 			var videoObject = {
@@ -12,10 +11,10 @@
 				loop: false, //播放结束是否循环播放
 				autoplay: false, //是否自动播放
 				//duration: 500, //设置视频总时间
-				cktrack: "{{ url_for('static', filename=vi_dic['main_info']['subtitle']['zh-Hans']) }}", //字幕文件
-				poster:  "{{ url_for('static', filename=vi_dic['main_info']['thumbnail']) }}", //封面图片
+				cktrack: "{{ vi_dic['main_info']['subtitle']['zh-Hans'] }}", //字幕文件
+				poster:  "{{ vi_dic['main_info']['thumbnail'] }}", //封面图片
 				preview: { //预览图片
-					file: ['../material/mydream_en1800_1010_01.png', '../material/mydream_en1800_1010_02.png'],
+					file: [''],
 					scale: 2
 				},
 				drag: 'start', //拖动的属性
@@ -26,14 +25,14 @@
 				next:'nextFun',//下一集的操作函数
 				//front:'frontHandler(player)',
 				
-				adfront:  '../static/video/NKlbxPftt_s.mp4,../static/video/2Earp6agI0w.mp4', //前置广告
+				adfront:  'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/NKlbxPftt_s.mp4,http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/2Earp6agI0w.mp4', //前置广告
 				adfronttime: '50,50',//前置广告单个时长
 				adfrontlink: '/watch?id=GPcqu-Ditx4,/watch?id=6-kigrXI-vc',
 				adfronttype:'mp4,mp4',
 				adpause: '../static/images/Login.png,../static/images/next.png',
 				adpausetime: '5,5',//暂信广告每个播放5秒种然后循环播放
 				adpauselink: 'https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh,https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh',
-				adinsert: '../static/video/NKlbxPftt_s.mp4,../static/video/2Earp6agI0w.mp4',
+				adinsert: 'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/NKlbxPftt_s.mp4,http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/NKlbxPftt_s.mp4',
 				adinserttime: '5,5',//中间插入广告的单个视频的时长
 				adinsertlink: '/watch?id=PtoJKhn73es,/watch?id=6-kigrXI-vc',
 				adinserttype:'mp4,mp4',
@@ -56,7 +55,7 @@
 				//h5container:'#videocontainer',//h5环境中使用自定义播放器ID
 				//h5videoid:'videoplayer',//h5环境中使用自定义的播放器ID
 				video: [
-			        ["{{ url_for('static', filename=vi_dic['main_info']['video_url']) }}", 'video/mp4', '中文标清', 0],
+			        ["{{ vi_dic['main_info']['test_url'] }}", 'video/mp4', '中文标清', 0],
 			    ]
 			};
             var user_info = eval({{user_info|safe}});

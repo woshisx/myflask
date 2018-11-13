@@ -159,7 +159,7 @@ class youtube_link():
                     f = open('./static/images/%s.jpg'%item['video_id'] , 'ab')
                     f.write(requests.get(item['thumbnail']).content)
                     f.close()
-                    self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'images/%s.jpg'%item['video_id']}})
+                    self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
         for x in video_down_list[:10]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
@@ -172,8 +172,8 @@ class youtube_link():
             yd_ = YouTube(video_url)
             yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/video/', video_id)
             print('download ' + video_url + ' success')
-            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/myweb/static/video/%s.mp4'%video_id}})
-            self.db.col.update({'video_id': video_id}, {'$set': {'test_url': 'video/%s.mp4' % video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/%s.mp4'%video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'test_url': '../static/video/%s.mp4' % video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
             # self.db.col.remove({'video_id': video_id})
@@ -198,7 +198,7 @@ class youtube_link():
                             exit()
                         i+=1
                         # print(Exception)
-                        shutil.copyfile("./static/images/%s.jpg"%item['video_id'], "./static/images/%s.gif"%item['video_id'])
+                        # shutil.copyfile("./static/images/%s.jpg"%item['video_id'], "./static/images/%s.gif"%item['video_id'])
 
 yt = youtube_link()
 # threads = []
@@ -216,9 +216,9 @@ yt = youtube_link()
 # yt.search('吉米今夜秀')
 
 # yt.load_list('极限运动',link='https://www.youtube.com/watch?v=Gpl_kkCXzPg&list=PLjA5LSvsPoRTBLGsXeO9qSzrrW2Z2EX86')
-yt.down_load(video = True)
+# yt.down_load(img = True)
 
-# yt.creat_gif()
+yt.creat_gif()
 
 # pl = ['0E1sDpiVQv0']
 # yt.keyword='电影'
