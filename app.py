@@ -114,7 +114,7 @@ def video():
     main_info = db.col.find_one({'video_id':id},{'_id': 0 })
     playlist_info = []
     temp_list = []
-    if main_info['playlist']:
+    if main_info:
         for each in main_info['playlist']:
             temp = db.col.find_one({'video_id': each},{'_id': 0 })
             if temp:
