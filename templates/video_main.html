@@ -2,7 +2,7 @@
 <title>{{ vi_dic['main_info']['title'] }} - Mixwheel</title>
 {% block body %}
 <div style="margin-left: 40px;margin-right: 0px;margin-top: 10px">
-  <div class="row" style="width: 100%">
+  <div class="row" >
 {#    <div class="col" style="flex-grow: 0">#}
     <div class="col-8">
         {% include 'video_win.html' %}
@@ -39,7 +39,7 @@
         <div class="media" style="margin-bottom: 5px;height: 160px" onmouseover="setover(this)" onmouseout="setout(this)">
             <img class="mr-3" src="{{ each['thumbnail']}}" style="width: 240px;height: 160px">
             <div class="media-body" style="height: 160px">
-                <h5 class="mt-0">{{ each['title'][:40] }}..</h5>
+                <h6 class="mt-0">{{ each['title'][:40] }}..</h6>
                 <p style="margin-top: 5px">时长 : {{ each['duration']['hour']}}</p>
                 <p><em>{{ each['view_count'] }} 次观看</em></p>
             </div>
@@ -56,7 +56,7 @@
             <div class="media" style="margin-bottom: 10px" onmouseover="setover(this)" onmouseout="setout(this)">
                     <img class="mr-3" src="{{ each['thumbnail'] }}" style="width: 240px;height: 160px">
                 <div class="media-body" style="height: 160px">
-                    <h5 class="mt-0">{{ each['title'][:80] }}..</h5>
+                    <h6 class="mt-0">{{ each['title'][:80] }}..</h6>
                     <p style="margin-top: 10px">时长 : {{ each['duration']['hour']}}</p>
                     <p><em>{{ each['view_count'] }} 次观看</em></p>
                 </div>

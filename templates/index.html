@@ -59,8 +59,8 @@
             for (var i = 0 ; i < 5; i++) {
                 html += '<li class="m-item">'+
                         '<h1 class="display-5">'+ dic.main_list[i][0].categories +'</h1>'+
-                         '<a class="navbar-brand" href="" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
-                        '<img class="rounded-circle" src="http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
+                         '<a class="navbar-brand" href="javascript:void(0)" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
+                        '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
                          '<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                        html +=
@@ -86,8 +86,8 @@
                     for (var i = 0 ; i < 1; i++) {
                         html += '<li class="m-item">'+
                                 '<h1 class="display-5">'+ dic.main_list[count][0].categories +'</h1>'
-                                + '<a class="navbar-brand" href="" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
-                                '<img class="rounded-circle" src="http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
+                                + '<a class="navbar-brand" href="javascript:void(0)" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
+                                '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
                                 +'<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                         var data = {
@@ -161,9 +161,8 @@ function exchange(obj){
                 $(this).find('img').attr('src',dic.main_list[index][item_index].thumbnail);
                 $(this).find('h5').text(dic.main_list[index][item_index].title.slice(0,50));
                 $(this).find('p').text(' | 时长 : '+ dic.main_list[index][item_index].duration.hour);
-                if(dic.main_list[index][item_index].view_count === null) {
-                    $(this).find('footer').text('0 次观看 | ' + dic.main_list[index][item_index].upload_date);
-                }
+                $(this).find('footer').text(dic.main_list[index][item_index].view_count+'次观看 | ' + dic.main_list[index][item_index].upload_date);
+
             });
         }
 
@@ -175,7 +174,29 @@ String.prototype.format = function() {
 			s = s.replace(new RegExp("\\{" + key + "\\}", "g"), obj[key]);
 		}
 		return s;
-	}
+	};
+
+	 $(function(){
+            var sUserAgent = navigator.userAgent.toLowerCase();
+            var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
+            var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
+            var bIsMidp = sUserAgent.match(/midp/i) == "midp";
+            var bIsUc7 = sUserAgent.match(/rv:1.2.3.4/i) == "rv:1.2.3.4";
+            var bIsUc = sUserAgent.match(/ucweb/i) == "ucweb";
+            var bIsAndroid = sUserAgent.match(/android/i) == "android";
+            var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
+            var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
+
+
+            if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
+              //  window.location.href = 'mobile设备地址';
+                        console('mobile设备地址')
+                        } else {
+              //  window.location = 'PC设备地址';
+                        console('PC设备地址')
+                        }
+
+     })
 
         </script>
 
