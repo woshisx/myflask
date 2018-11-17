@@ -114,18 +114,19 @@ def video():
     main_info = db.col.find_one({'video_id':id},{'_id': 0 })
     playlist_info = []
     temp_list = []
+    relate_info = []
     if main_info:
         for each in main_info['playlist']:
             temp = db.col.find_one({'video_id': each},{'_id': 0 })
             if temp:
                 playlist_info.append(temp)
-    relate = db.col.find({'categories':main_info['categories']},{'_id': 0})
-    for each in relate:
-        temp_list.append(each)
-    if len(temp_list)>10:
-        relate_info = random.sample(temp_list, 10)
-    else:
-        relate_info = temp_list
+        relate = db.col.find({'categories':main_info['categories']},{'_id': 0})
+        for each in relate:
+            temp_list.append(each)
+        if len(temp_list)>10:
+            relate_info = random.sample(temp_list, 10)
+        else:
+            relate_info = temp_list
     vi_dic = {}
     vi_dic['main_info'] = main_info
     vi_dic['playlist_info'] = playlist_info

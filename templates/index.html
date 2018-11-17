@@ -30,7 +30,8 @@
         .m-item {
             position: relative;
             {#height: 300px;#}
-            padding: 10px;
+            {#padding: 10px;#}
+            margin-left: 15px;
             list-style: none
         }
         .mCustomScrollBox{overflow: unset;}
@@ -64,12 +65,12 @@
                          '<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                        html +=
-                           '<a href="/watch?id=' + dic.main_list[i][j].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">'  +
-                        '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
-                        '<img class="card-img-top" src="' + dic.main_list[i][j].thumbnail + '" style="height: 220px;">' +
-                        '<div class="card-body">' +
+                           '<a href="/watch?id=' + dic.main_list[i][j].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'" class="nail'+ j +'">'+
+                        '<div style="height: 309px;width:267px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)" class="nail_item">' +
+                        '<img class="card-img-top" src="' + dic.main_list[i][j].thumbnail + '" style="height: 169px;">' +
+                        '<div class="card-body" style="padding:5px">' +
                         '<h5 class="card-title">' + dic.main_list[i][j].title.slice(0,50) + '</h5>' +
-                        '<p style="font-size: large" class="card-text">' + ' | 时长 : ' + dic.main_list[i][j].duration.hour + '</p>' +
+                        '<p style="font-size: large">' + ' | 时长 : ' + dic.main_list[i][j].duration.hour + '</p>' +
                         '<footer class="blockquote-footer" style="font-size: medium">' + dic.main_list[i][j].view_count + ' 次观看 | ' + dic.main_list[i][j].upload_date + '</footer>' +
                         '</div></div></a>'
                          }
@@ -99,12 +100,12 @@
                             upload_date : dic.main_list[count][j].upload_date
                         };
                         var temp =
-                        '<a href="/watch?id={video_id}" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'">' +
-                        '<div style="height: 400px;width:350px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)">' +
-                        '<img class="card-img-top" src="{thumbnail}" style="height: 220px;">' +
-                        '<div class="card-body">' +
+                        '<a href="/watch?id={video_id}" style="text-decoration:none;color: #1b1e21" target="_blank" id="'+ j +'" class="nail'+ j +'">' +
+                        '<div style="height: 309px;width:267px;margin-right: 8px" onmouseover="setover(this)" onmouseout="setout(this)" class="nail_item">' +
+                        '<img class="card-img-top" src="{thumbnail}" style="height: 169px;">' +
+                        '<div class="card-body" style="padding:5px">' +
                         '<h5 class="card-title">{title}</h5>' +
-                        '<p style="font-size: large" class="card-text"> | 时长 : {duration}</p>' +
+                        '<p style="font-size: large"> | 时长 : {duration}</p>' +
                         '<footer class="blockquote-footer" style="font-size: medium">{view_count} 次观看 | {upload_date}</footer>' +
                         '</div></div></a>';
                         html += temp.format(data);
@@ -118,6 +119,7 @@
                         myScroll.refresh();
                     }
                 }
+                ajust();
             }
             myScroll = new IScroll('#wrapper', {
                 click: true,        //支持点击
@@ -144,26 +146,28 @@ function setout(obj) {
 }
 
 function exchange(obj){
-            var index = $(obj).attr('id');
-            var a = $(obj).next().next().children("a");
-            var i = 0;
-             a.each(function(){
-                var item_index = $(this).attr('id');
-                item_index = Number(item_index)+5;
-                if(item_index > dic.main_list[index].length-1){
-                    item_index = i;
-                    i++;
-                }
-                $(this).attr({
-                    'href':'/watch?id='+ dic.main_list[index][item_index].video_id,
-                    'id': item_index
-                });
-                $(this).find('img').attr('src',dic.main_list[index][item_index].thumbnail);
-                $(this).find('h5').text(dic.main_list[index][item_index].title.slice(0,50));
-                $(this).find('p').text(' | 时长 : '+ dic.main_list[index][item_index].duration.hour);
-                $(this).find('footer').text(dic.main_list[index][item_index].view_count+'次观看 | ' + dic.main_list[index][item_index].upload_date);
-
+    $(document).ready(function() {
+        var index = $(obj).attr('id');
+        var a = $(obj).next().next().children("a");
+        var i = 0;
+        a.each(function () {
+            var item_index = $(this).attr('id');
+            item_index = Number(item_index) + 5;
+            if (item_index > dic.main_list[index].length - 1) {
+                item_index = i;
+                i++;
+            }
+            $(this).attr({
+                'href': '/watch?id=' + dic.main_list[index][item_index].video_id,
+                'id': item_index
             });
+            $(this).find('img').attr('src', dic.main_list[index][item_index].thumbnail);
+            $(this).find('h5').text(dic.main_list[index][item_index].title.slice(0, 50));
+            $(this).find('p').text(' | 时长 : ' + dic.main_list[index][item_index].duration.hour);
+            $(this).find('footer').text(dic.main_list[index][item_index].view_count + '次观看 | ' + dic.main_list[index][item_index].upload_date);
+
+        })
+        });
         }
 
 String.prototype.format = function() {
@@ -176,7 +180,49 @@ String.prototype.format = function() {
 		return s;
 	};
 
-	 $(function(){
+function ajust(){
+    var nail = $("div.nail_item");
+    var a4 =  $("a.nail4");
+    var a3 =  $("a.nail3");
+     var cliWidth = document.body.clientWidth-100;
+        console.log(cliWidth);
+        if (cliWidth>=1400) {
+            nail.each(function () {
+                $(this).css('width', Math.abs(cliWidth * 0.19));
+                $(this).css('height', Math.abs(cliWidth * 0.22));
+                $(this).children("img").css('height', Math.abs(cliWidth * 0.12));
+            });
+            a4.each(function () {
+                $(this).show();
+            });
+        }
+        if (cliWidth<1400 && cliWidth>=1095) {
+        a4.each(function () {
+            $(this).hide();
+        });
+        a3.each(function () {
+            $(this).show();
+            });
+        }
+         if (cliWidth<1095) {
+        a3.each(function () {
+            $(this).hide();
+        });
+        a4.each(function () {
+            $(this).hide();
+        });
+        }
+}
+
+$(function() {
+    ajust();
+});
+
+$(window).resize(function () {
+    ajust();
+});
+
+$(function what_device(){
             var sUserAgent = navigator.userAgent.toLowerCase();
             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
             var bIsIphoneOs = sUserAgent.match(/iphone os/i) == "iphone os";
@@ -190,13 +236,14 @@ String.prototype.format = function() {
 
             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
               //  window.location.href = 'mobile设备地址';
-                        console('mobile设备地址')
+                        console.log('mobile设备地址')
                         } else {
-              //  window.location = 'PC设备地址';
-                        console('PC设备地址')
+              //  window.location = '/login';
+                        console.log('PC设备地址')
                         }
 
      })
+
 
         </script>
 
