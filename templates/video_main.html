@@ -1,12 +1,12 @@
 {% extends 'head.html' %}
 <title>{{ vi_dic['main_info']['title'] }} - Mixwheel</title>
 {% block body %}
-<div style="margin-left: 30px;margin-right: 0px;margin-top: 10px">
+<div style="margin-left: 30px;margin-right: 30px;margin-top: 10px">
   <div class="row" >
 {#    <div class="col" style="flex-grow: 0">#}
-    <div class="col-8">
+    <div class="col-8" id="col-8">
         {% include 'video_win.html' %}
-        <div>
+        <div id="content">
             <div class="row">
                 <h1 style="width: auto;margin-top: 50px;color: #333333">{{vi_dic['main_info']['title'][:50] }}</h1>
             </div>
@@ -27,7 +27,7 @@
             </div>
         </div>
     </div>
-    <div class="col-4">
+    <div class="col-4" id="col-4">
     {% if vi_dic['main_info']['playlist']|length > 1  %}
      <div class="card" style="height: 618px;margin-bottom: 10px">
   <ul class="list-group list-group-flush">
@@ -78,5 +78,34 @@
     var temp_img = first.src.slice(0, -4);
     first.src = temp_img + '.jpg'
     }
+
+    function ajust(){
+    var nail_col4 = $("div#col-4");
+    var nail_col8 = $("div#col-8");
+    var content = $("div#content");
+     var cliWidth = document.body.clientWidth-50;
+     console.log(cliWidth);
+        if (cliWidth>=1400) {
+            nail_col8.attr('class','col-8');
+            nail_col4.attr('class','col-4');
+            nail_col4.insertAfter(nail_col8);
+        }
+        if (cliWidth<1400) {
+            nail_col8.attr('class','col');
+            nail_col4.attr('class','col');
+            nail_col4.insertAfter(content);
+        }
+
+}
+
+$(function() {
+    ajust();
+});
+
+$(window).resize(function () {
+    ajust();
+});
+
+
     </script>
 {% endblock %}
