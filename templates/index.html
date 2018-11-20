@@ -61,7 +61,7 @@
                 html += '<li class="m-item">'+
                         '<h1 class="display-5">'+ dic.main_list[i][0].categories +'</h1>'+
                          '<a class="navbar-brand" href="javascript:void(0)" onclick="exchange(this)" style="float: right" id="'+ i +'">' +
-                        '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
+                        '<img class="rounded-circle" src="../static/oss/images/exchange.jpg" style="width: 40px;height: 40px"></a>'+
                          '<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                        html +=
@@ -88,7 +88,7 @@
                         html += '<li class="m-item">'+
                                 '<h1 class="display-5">'+ dic.main_list[count][0].categories +'</h1>'
                                 + '<a class="navbar-brand" href="javascript:void(0)" onclick="exchange(this)" style="float: right" id="'+ count +'">' +
-                                '<img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
+                                '<img class="rounded-circle" src="../static/oss/images/exchange.jpg" style="width: 40px;height: 40px"></a>'
                                 +'<br>'+ ' <div class="row">';
                     for (var j = 0 ; j < 5; j++) {
                         var data = {
@@ -185,7 +185,6 @@ function ajust(){
     var a4 =  $("a.nail4");
     var a3 =  $("a.nail3");
      var cliWidth = document.body.clientWidth-100;
-        console.log(cliWidth);
         if (cliWidth>=1400) {
             nail.each(function () {
                 $(this).css('width', Math.abs(cliWidth * 0.19));
@@ -233,15 +232,15 @@ $(function what_device(){
             var bIsCE = sUserAgent.match(/windows ce/i) == "windows ce";
             var bIsWM = sUserAgent.match(/windows mobile/i) == "windows mobile";
 
-
             if (bIsIpad || bIsIphoneOs || bIsMidp || bIsUc7 || bIsUc || bIsAndroid || bIsCE || bIsWM) {
               //  window.location.href = 'mobile设备地址';
-                        console.log('mobile设备地址')
-                        } else {
+                        console.log('mobile设备地址');
+                alert(window.location.pathname)        
+                    }
+                    else {
               //  window.location = '/login';
-                        console.log('PC设备地址')
-                        }
-
+                        console.log('PC设备地址');       
+                                             }
      })
 
 
