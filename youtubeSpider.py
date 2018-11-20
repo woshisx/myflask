@@ -159,7 +159,7 @@ class youtube_link():
                     f = open('./static/images/%s.jpg'%item['video_id'] , 'ab')
                     f.write(requests.get(item['thumbnail']).content)
                     f.close()
-                    self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/images/%s.jpg'%item['video_id']}})
+                    self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
         for x in video_down_list[:10]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
@@ -172,7 +172,7 @@ class youtube_link():
             yd_ = YouTube(video_url)
             yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/video/', video_id)
             print('download ' + video_url + ' success')
-            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://my-mixwheel.oss-cn-zhangjiakou-internal.aliyuncs.com/myweb/static/video/%s.mp4'%video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'../static/video/%s.mp4'%video_id}})
             self.db.col.update({'video_id': video_id}, {'$set': {'test_url': '../static/video/%s.mp4' % video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
@@ -190,7 +190,7 @@ class youtube_link():
                 if not os.path.exists("./static/images/%s.gif" % item['video_id']):
                     print(item['video_id'])
                     try:
-                        clip = (VideoFileClip('./static/%s'%item['test_url']).subclip(80,83).resize((240,135)))
+                        clip = (VideoFileClip('./static/%s'%item['test_url']).subclip(80,82).resize((240,135)))
                         clip.write_gif("./static/images/%s.gif"%item['video_id'])
                     except :
                         print(i)
