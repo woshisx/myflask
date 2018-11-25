@@ -12,26 +12,7 @@
     </a>
     </div>
     <script>
-        function test(obj){
-            var a = $(obj).attr('id');
-            var x = $(obj).next().next();
-            var A = {a:1,b:2,c:3,d:"hello world"};
-
-            {#x.find('a').attr('href',"test.html") ;#}
-            {#x.find('img').attr('src' , "../static/images/d-XbjFn3aqE.gif");#}
-            document.body.parentNode.style.overflowY = "hidden";
-            $("body").parent().css("overflow-y","hidden");
-        }
-        String.prototype.format = function() {
-		if(arguments.length === 0) return this;
-		var obj = arguments[0];
-		var s = this;
-		for(var key in obj) {
-			s = s.replace(new RegExp("\\{" + key + "\\}", "g"), obj[key]);
-		}
-		return s;
-	}
-
+    
 	$(function what_device(){
             var sUserAgent = navigator.userAgent.toLowerCase();
             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";

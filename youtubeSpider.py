@@ -83,9 +83,10 @@ class youtube_link():
         insert_dic['video_id'] = json_dic['id']
         insert_dic['thumbnail'] = json_dic['thumbnail']
         insert_dic['tags'] = json_dic['tags']
-        insert_dic['tags'].append(self.keyword)
+        if self.keyword:
+            insert_dic['tags'].append(self.keyword)
+            insert_dic['keyword'] = self.keyword
         insert_dic['categories'] = json_dic['categories']
-        insert_dic['keyword'] = self.keyword
         insert_dic['upload_date'] = json_dic['upload_date']
         insert_dic['creator'] = json_dic['creator']
         insert_dic['uploader'] = json_dic['uploader']
@@ -131,6 +132,16 @@ class youtube_link():
             playlist_id = self.get_list('https://www.youtube.com'+ each.find('a').get('href'))
             self.prase(playlist_id)
 
+    def get_href(self,keword=None,link=None):
+        self.keyword = keword
+        res = requests.get(link)
+        soup = BeautifulSoup(res.text)
+        link_list = soup.findAll(name='a',attrs={"href":re.compile(r'^/watch')})
+        for each in link_list:
+            playlist_id = []
+            playlist_id.append(each.get('href')[9:20])
+            self.prase(playlist_id)
+
     def load_list(self,keyword,link):
         self.keyword = keyword
         self.prase(self.get_list(link))
@@ -161,7 +172,7 @@ class youtube_link():
                     f.close()
                     self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
-        for x in video_down_list[:10]:
+        for x in video_down_list[:1]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
             t.start()
 
@@ -172,8 +183,7 @@ class youtube_link():
             yd_ = YouTube(video_url)
             yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/video/', video_id)
             print('download ' + video_url + ' success')
-            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'../static/video/%s.mp4'%video_id}})
-            self.db.col.update({'video_id': video_id}, {'$set': {'test_url': '../static/video/%s.mp4' % video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'47.92.219.115/static/oss/video/%s.mp4'%video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
             # self.db.col.remove({'video_id': video_id})
@@ -186,11 +196,11 @@ class youtube_link():
     def creat_gif(self):
         i=0
         for item in self.db.col.find():
-            if not re.search('www.youtube.com', item['test_url']):
+            if not re.search('www.youtube.com', item['video_url']):
                 if not os.path.exists("./static/images/%s.gif" % item['video_id']):
                     print(item['video_id'])
                     try:
-                        clip = (VideoFileClip('./static/%s'%item['test_url']).subclip(80,82).resize((240,135)))
+                        clip = (VideoFileClip('./static/video/%s.mp4'%item['video_id']).subclip(80,82).resize((240,135)))
                         clip.write_gif("./static/images/%s.gif"%item['video_id'])
                     except :
                         print(i)
@@ -215,14 +225,17 @@ yt = youtube_link()
 # print(yt.youtube_info('Wr7nlnRq3tU'))
 # yt.search('吉米今夜秀')
 
-# yt.load_list('极限运动',link='https://www.youtube.com/watch?v=Gpl_kkCXzPg&list=PLjA5LSvsPoRTBLGsXeO9qSzrrW2Z2EX86')
-# yt.down_load(img = True)
+# yt.load_list('扶摇',link='https://www.youtube.com/watch?v=UAE2Yjsu4mw&list=PLooD8l3FSd6nIcdcpSCGT0STWCDi4ghBx')
+yt.down_load(video = True)
 
-yt.creat_gif()
+# yt.creat_gif()
 
-# pl = ['0E1sDpiVQv0']
-# yt.keyword='电影'
+# pl = ['D0ia2Xz3kHc','_cSRo9hN3KM','hWz1KINe5sw','qu7umEB2wFY','aglPHJxaaF8']
+# yt.keyword='趣闻'
 # yt.prase(pl)
+
+# yt.get_href(keword='Will Smith',link='https://www.youtube.com/channel/UCKuHFYu3smtrl2AwwMOXOlg')
+
 
 
 
