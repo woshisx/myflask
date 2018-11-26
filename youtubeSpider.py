@@ -165,7 +165,7 @@ class youtube_link():
                     temp_list =[]
 
             if img:
-                if re.search('https',item['thumbnail']):
+                if re.search('ytimg',item['thumbnail']):
                     print('Downloading ' + item['video_id'] + '.....')
                     f = open('./static/images/%s.jpg'%item['video_id'] , 'ab')
                     f.write(requests.get(item['thumbnail']).content)
@@ -183,7 +183,7 @@ class youtube_link():
             yd_ = YouTube(video_url)
             yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/video/', video_id)
             print('download ' + video_url + ' success')
-            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'47.92.219.115/static/oss/video/%s.mp4'%video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://47.92.219.115/static/oss/video/%s.mp4'%video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
             # self.db.col.remove({'video_id': video_id})
