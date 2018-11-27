@@ -70,7 +70,7 @@ def register():
             user_dic['user_tag'] = None
             user_dic['review_history'] = None
             db.user.insert(user_dic)
-        return redirect(url_for('index'))
+        return redirect(url_for('login'))
     # GET 请求
     return render_template('register.html')
 
