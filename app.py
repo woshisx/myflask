@@ -181,7 +181,7 @@ def delete():
     else:
         return 'bye-bye'
 
-@app.route('/admin',methods=['GET','POST'])
+@app.route('/admin/video',methods=['GET','POST'])
 @login_required
 def admin():
     if current_user.get_id() == 'admin':
@@ -207,9 +207,15 @@ def userValidate():
     else:
         return ''
 
-@app.route('/test',methods=['GET','POST'])
-def test():
-    return render_template('test.html')
+@app.route('/admin/ad',methods=['GET','POST'])
+def admin_ad():
+    dic = {}
+    ad_info =[]
+    for each in db.ads.find():
+        ad_info.append(each)
+    dic['ad_info']=ad_info
+    dic = json.dumps(dic)
+    return render_template('admin_ads.html',dic=dic)
 
 def user_mail_confir(address):
     # 导入python里面的这个stmplib这个库

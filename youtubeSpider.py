@@ -172,7 +172,7 @@ class youtube_link():
                     f.close()
                     self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
-        for x in video_down_list[:1]:
+        for x in video_down_list[:3]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
             t.start()
 
@@ -186,7 +186,7 @@ class youtube_link():
             self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://47.92.219.115/static/oss/video/%s.mp4'%video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
-            # self.db.col.remove({'video_id': video_id})
+            self.db.col.remove({'video_id': video_id})
 
     def update_playlist(self):
         for item in self.db.col.find():
