@@ -130,7 +130,7 @@ def video():
             relate_info = temp_list
         for each in db.ads.find({},{'_id': 0 }):
             ad_info.append(each)
-        ad_info = random.sample(ad_info,1)
+        ad_info = random.sample(ad_info,1)[0]
     vi_dic = {}
     vi_dic['main_info'] = main_info
     vi_dic['playlist_info'] = playlist_info
