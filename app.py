@@ -1,21 +1,4 @@
-from flask import Flask,render_template,url_for,request,redirect,Blueprint,session,flash
-from pymongo import MongoClient
-import datetime,os,re,json,random
-from fuzzywuzzy import fuzz,process
-from flask_login import LoginManager,UserMixin,login_required,current_user,login_user,logout_user
-
-app = Flask(__name__)
-conn = MongoClient('localhost', 27017)
-db = conn.youtube_db
-#user-------------
-app.secret_key = 'ds8cix1'
-login_manager = LoginManager()
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'login'
-login_manager.login_message_category = "info"
-login_manager.login_message = u"请登录！"
-login_manager.init_app(app=app)
-auth = Blueprint('auth',__name__)
+from myflask import *
 class User(UserMixin):
     pass
 
@@ -115,6 +98,7 @@ def video():
     playlist_info = []
     temp_list = []
     relate_info = []
+    ad_info = []
     if main_info:
         for each in main_info['playlist']:
             temp = db.col.find_one({'video_id': each},{'_id': 0 })
@@ -127,10 +111,14 @@ def video():
             relate_info = random.sample(temp_list, 10)
         else:
             relate_info = temp_list
+        for each in db.ads.find():
+            ad_info.append(each)
+        ad_info = random.sample(ad_info,1)
     vi_dic = {}
     vi_dic['main_info'] = main_info
     vi_dic['playlist_info'] = playlist_info
     vi_dic['relate_info'] = relate_info
+    vi_dic['ad_info'] = ad_info
     user_info = json.dumps(user_info)
     return render_template('video_main.html',vi_dic = vi_dic,user_info =user_info)
 
@@ -159,42 +147,6 @@ def index():
     dic = json.dumps(dic)
     return render_template('index.html',title='欢迎来到MixWheel',dic = dic)
 
-@app.route('/delete',methods=['GET','POST'])
-@login_required
-def delete():
-    if current_user.get_id() == 'admin':
-        id = request.args.get('id')
-        try:
-            os.remove('./myweb/static/images/%s.gif'%id)
-        except:
-            pass
-        try:
-            os.remove('./myweb/static/images/%s.jpg'%id)
-        except:
-            pass
-        try:
-            os.remove('./myweb/static/video/%s.mp4'%id)
-        except:
-            pass
-        db.col.remove({'video_id': id})
-        return id+' deleted'
-    else:
-        return 'bye-bye'
-
-@app.route('/admin/video',methods=['GET','POST'])
-@login_required
-def admin():
-    if current_user.get_id() == 'admin':
-        main_info = []
-        dic = {}
-        for each in db.col.find():
-            main_info.append(each)
-        dic['main_info'] = main_info
-        dic = json.dumps(dic)
-        return render_template('admin_video.html', dic=dic)
-    else:
-        return 'bye-bye'
-
 @app.route('/register',methods=['GET','POST'])
 def signup():
     return render_template('register.html')
@@ -208,14 +160,74 @@ def userValidate():
         return ''
 
 @app.route('/admin/ad',methods=['GET','POST'])
-def admin_ad():
-    dic = {}
-    ad_info =[]
-    for each in db.ads.find():
-        ad_info.append(each)
-    dic['ad_info']=ad_info
-    dic = json.dumps(dic)
+def ad():
+    dic = []
+    for each in db.ads.find({},{'_id': 0 }):
+        dic.append(each)
     return render_template('admin_ads.html',dic=dic)
+
+@app.route('/admin/ad_post',methods=['POST'])
+def ad_action():
+    action = request.args.get('action')
+    dic = request.form.to_dict()
+    if action == 'insert':
+        try:
+            if not db.ads.find({'ad_id':dic['ad_id']}).count() and dic['ad_id']:
+                db.ads.insert(dic)
+                return '插入成功'
+            else:
+                return '记录已经存在或数据不规范'
+        except:
+            return '插入出错'
+    if action == 'delete':
+        try:
+            if dic:
+                db.ads.remove({'ad_id':dic['ad_id']})
+                return '删除成功'
+        except:
+            return '删除出错'
+
+@app.route('/admin/video_post',methods=['GET','POST'])
+@login_required
+def video_action():
+    if current_user.get_id() == 'admin':
+        action = request.args.get('action')
+        id = request.form.to_dict()['video_id']
+        if action =='delete':
+            try:
+                os.remove('./myflask/static/oss/images/%s.jpg'%id)
+            except:
+                pass
+            try:
+                os.remove('E:/oss/images/%s.jpg'%id)
+            except:
+                pass
+            try:
+                os.remove('E:/oss/video/%s.mp4'%id)
+            except:
+                pass
+            try:
+                os.remove('./myflask/static/oss/video/%s.mp4'%id)
+            except:
+                pass
+            db.col.remove({'video_id': id})
+        return id+' deleted'
+    else:
+        return 'bye-bye'
+
+@app.route('/admin/video',methods=['GET','POST'])
+@login_required
+def admin_video():
+    if current_user.get_id() == 'admin':
+        main_info = []
+        dic = {}
+        for each in db.col.find({},{'_id': 0 }):
+            main_info.append(each)
+        dic['main_info'] = main_info
+        dic = json.dumps(dic)
+        return render_template('admin_video.html', dic=dic)
+    else:
+        return 'bye-bye'
 
 def user_mail_confir(address):
     # 导入python里面的这个stmplib这个库

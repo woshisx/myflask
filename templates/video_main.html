@@ -36,7 +36,7 @@
        <div data-spy="scroll"  class="pre-scrollable" style="max-height: 500px;">
        {% for each in vi_dic['playlist_info'] %}
         <a href="{{ url_for('video',id = each['video_id'])}}" style="text-decoration:none;color: #1b1e21">
-        <div class="media" style="margin-bottom: 5px;height: 160px" onmouseover="setover(this)" onmouseout="setout(this)">
+        <div class="media" style="margin-bottom: 5px;height: 160px">
             <img class="mr-3" src="{{ each['thumbnail']}}" style="width: 240px;height: 160px">
             <div class="media-body" style="height: 160px">
                 <h6 class="mt-0">{{ each['title'][:40] }}..</h6>
@@ -53,7 +53,7 @@
     {% endif %}
     {% for each in vi_dic['relate_info'] %}
         <a href="{{ url_for('video',id = each['video_id'])}}" style="text-decoration:none;color: #1b1e21">
-            <div class="media" style="margin-bottom: 10px" onmouseover="setover(this)" onmouseout="setout(this)">
+            <div class="media" style="margin-bottom: 10px">
                     <img class="mr-3" src="{{ each['thumbnail'] }}" style="width: 240px;height: 160px">
                 <div class="media-body" style="height: 160px">
                     <h6 class="mt-0">{{ each['title'][:80] }}..</h6>
@@ -68,16 +68,6 @@
 
 </div>
     <script type="text/javascript">
-    function setover(obj) {
-    var first=obj.firstElementChild;
-    var temp_img = first.src.slice(0, -4);
-    first.src = temp_img + '.gif'
-    }
-    function setout(obj) {
-    var first=obj.firstElementChild;
-    var temp_img = first.src.slice(0, -4);
-    first.src = temp_img + '.jpg'
-    }
 
     function ajust(){
     var nail_col4 = $("div#col-4");

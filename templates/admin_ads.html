@@ -1,24 +1,62 @@
 {% include 'head.html' %}
-<table class="table" style="">
+<table class="table" style="width: 70%">
   <thead>
     <tr>
       <th scope="col">#</th>
       <th scope="col">ad title</th>
       <th scope="col">ad id</th>
+        <th scope="col">ad link</th>
       <th scope="col">ad time</th>
       <th scope="col">ad type</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <th scope="row">1</th>
-      <td><input type="text"  placeholder="" style="width: 350px"></td>
-      <td><input type="text"  placeholder=""></td>
-      <td><input type="text"  placeholder=""></td>
-      <td><input type="text"  placeholder=""></td>
-      <td><button type="button" class="btn btn-primary">更新</button></td>
-        <td><button type="button" class="btn btn-primary">删除</button></td>
+      <th scope="row">0</th>
+      <td><input type="text"  class="ad_title" style="width: 250px"></td>
+        <td><input type="text"  class="ad_id"></td>
+        <td><input type="text"  class="ad_link" style="width: 350px"></td>
+      <td><input type="text"  class="ad_time" value="30"></td>
+      <td><input type="text"  class="ad_type" value="video"></td>
+      <td><button type="button" class="btn btn-primary" onclick="insert(this)">增加</button></td>
     </tr>
+    {% for each in dic %}
+        <tr>
+      <th scope="row">0</th>
+      <td><input type="text"  class="ad_title" style="width: 250px" value="{{ each['ad_title'] }}"></td>
+      <td><input type="text"  class="ad_id" value="{{ each['ad_id'] }}"></td>
+            <td><input type="text"  class="ad_link" value="{{ each['ad_link'] }}" style="width: 350px"></td>
+      <td><input type="text"  class="ad_time" value="{{ each['ad_time'] }}"></td>
+      <td><input type="text"  class="ad_type" value="{{ each['ad_type'] }}"></td>
+       <td><button type="button" class="btn btn-primary" onclick="del(this)">删除</button></td>
+        </tr>
+    {% endfor %}
   </tbody>
 </table>
-<script src="../static/angularjs/angularjs.min.js"></script>
+<script type="text/javascript">
+
+    function insert(obj) {
+        var item = $(obj).parent().parent();
+        var ad_info={};
+        ad_info.ad_title = item.find('input.ad_title').val();
+        ad_info.ad_id = item.find('input.ad_id').val();
+        ad_info.ad_url = 'http://www.mixwheel.top/static/oss/video/'+item.find('input.ad_id').val()+'.mp4';
+        ad_info.ad_link = item.find('input.ad_link').val();
+        ad_info.ad_time = item.find('input.ad_time').val();
+        ad_info.ad_type = item.find('input.ad_type').val();
+        $.post("/admin/ad_post?action=insert",ad_info ,
+  function(data,status){
+    alert("Data: " + data + "\nStatus: " + status);
+    });
+    }
+    function del(obj) {
+        var item = $(obj).parent().parent();
+        var ad_info={};
+        ad_info.ad_id = item.find('input.ad_id').val();
+        $.post("/admin/ad_post?action=delete",ad_info ,
+  function(data,status){
+            if(data==='删除成功'){item.remove()}
+    alert("Data: " + data + "\nStatus: " + status);
+    });
+    }
+</script>

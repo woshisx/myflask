@@ -25,23 +25,19 @@
 				next:'nextFun',//下一集的操作函数
 				//front:'frontHandler(player)',
 				
-				adfront:  'http://www.mixwheel.top/static/oss/video/NKlbxPftt_s.mp4,http://www.mixwheel.top/static/oss/video/2Earp6agI0w.mp4', //前置广告
-				adfronttime: '50,20',//前置广告单个时长
-				adfrontlink: '/watch?id=GPcqu-Ditx4,/watch?id=6-kigrXI-vc',
+				adfront:  "{{ vi_dic['ad_info']['ad_url'] }}", //前置广告
+				adfronttime: "{{ vi_dic['ad_info']['ad_time'] }}",//前置广告单个时长
+				adfrontlink: "{{ vi_dic['ad_info']['ad_link'] }}",
 				adfronttype:'mp4,mp4',
 				adpause: 'https://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/ads_01.jpg,https://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/ads_01.jpg',
 				adpausetime: '5,5',//暂信广告每个播放5秒种然后循环播放
 				adpauselink: 'https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh,https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh',
-				adinsert: 'http://www.mixwheel.top/static/oss/video/NKlbxPftt_s.mp4,http://www.mixwheel.top/static/oss/video/2Earp6agI0w.mp4',
-				adinserttime: '5,5',//中间插入广告的单个视频的时长
-				adinsertlink: '/watch?id=PtoJKhn73es,/watch?id=6-kigrXI-vc',
-				adinserttype:'mp4,mp4',
-				inserttime:'600,1800',//中间插入广告需要显示的时间点
-				{#adend: 'https://ckplayer-video.oss-cn-shanghai.aliyuncs.com/ckplayer-ad/end01.mp4,https://ckplayer-video.oss-cn-shanghai.aliyuncs.com/ckplayer-ad/end02.mp4',#}
-				{#adendtime: '5,5',#}
-				{#adendtype:'mp4,mp4',#}
-				{#adendlink: 'https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh,https://promotion.aliyun.com/ntms/yunparter/invite.html?userCode=8hiawluh',#}
-				//advertisements:'website:ad.json',//广告部分也可以用一个json文件来进行配置，可以动态文件
+				//adinsert: 'http://www.mixwheel.top/static/oss/video/NKlbxPftt_s.mp4,http://www.mixwheel.top/static/oss/video/2Earp6agI0w.mp4',
+				//adinserttime: '5,5',//中间插入广告的单个视频的时长
+				//adinsertlink: '/watch?id=PtoJKhn73es,/watch?id=6-kigrXI-vc',
+				//adinserttype:'mp4,mp4',
+				//inserttime:'600',//中间插入广告需要显示的时间点
+
 				//广告部分结束
 				promptSpot: [ //提示点
 					{#{ words: '提示点文字01', time: 30}#}

@@ -167,12 +167,12 @@ class youtube_link():
             if img:
                 if re.search('ytimg',item['thumbnail']):
                     print('Downloading ' + item['video_id'] + '.....')
-                    f = open('./static/images/%s.jpg'%item['video_id'] , 'ab')
+                    f = open('./static/oss/images/%s.jpg'%item['video_id'] , 'ab')
                     f.write(requests.get(item['thumbnail']).content)
                     f.close()
                     self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
-        for x in video_down_list[:3]:
+        for x in video_down_list[:2]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
             t.start()
 
@@ -181,9 +181,9 @@ class youtube_link():
         try:
             print('Downloading ' + video_url + '.....')
             yd_ = YouTube(video_url)
-            yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/video/', video_id)
+            yd_.streams.filter(progressive=True, subtype='mp4').first().download('./static/oss/video/', video_id)
             print('download ' + video_url + ' success')
-            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://47.92.219.115/static/oss/video/%s.mp4'%video_id}})
+            self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://www.mixwheel.top/static/oss/video/%s.mp4'%video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
             self.db.col.remove({'video_id': video_id})
@@ -197,18 +197,18 @@ class youtube_link():
         i=0
         for item in self.db.col.find():
             if not re.search('www.youtube.com', item['video_url']):
-                if not os.path.exists("./static/images/%s.gif" % item['video_id']):
+                if not os.path.exists("./static/oss/images/%s.gif" % item['video_id']):
                     print(item['video_id'])
                     try:
-                        clip = (VideoFileClip('./static/video/%s.mp4'%item['video_id']).subclip(80,82).resize((240,135)))
-                        clip.write_gif("./static/images/%s.gif"%item['video_id'])
+                        clip = (VideoFileClip('./static/oss/video/%s.mp4'%item['video_id']).subclip(80,82).resize((240,135)))
+                        clip.write_gif("./static/oss/images/%s.gif"%item['video_id'])
                     except :
                         print(i)
                         if i>5:
                             exit()
                         i+=1
                         # print(Exception)
-                        # shutil.copyfile("./static/images/%s.jpg"%item['video_id'], "./static/images/%s.gif"%item['video_id'])
+                        # shutil.copyfile("./static/oss/images/%s.jpg"%item['video_id'], "./static/images/%s.gif"%item['video_id'])
 
 yt = youtube_link()
 # threads = []
@@ -225,16 +225,14 @@ yt = youtube_link()
 # print(yt.youtube_info('Wr7nlnRq3tU'))
 # yt.search('吉米今夜秀')
 
-# yt.load_list('扶摇',link='https://www.youtube.com/watch?v=UAE2Yjsu4mw&list=PLooD8l3FSd6nIcdcpSCGT0STWCDi4ghBx')
+# yt.load_list('我是大医生',link='https://www.youtube.com/watch?v=-P8UTJqGR_g&list=PLkLimRXN6NKyN6uITqZCf2Vj_is_noAnf')
 yt.down_load(video = True)
 
-# yt.creat_gif()
-
-# pl = ['D0ia2Xz3kHc','_cSRo9hN3KM','hWz1KINe5sw','qu7umEB2wFY','aglPHJxaaF8']
-# yt.keyword='趣闻'
+# pl = ['ZLCw-o_3zvI']
+# yt.keyword='我是大医生'
 # yt.prase(pl)
 
-# yt.get_href(keword='Will Smith',link='https://www.youtube.com/channel/UCKuHFYu3smtrl2AwwMOXOlg')
+# yt.get_href(keword='科普',link='https://www.youtube.com/channel/UCQxZKi5KM_sgO6Q41o-udcA/videos')
 
 
 

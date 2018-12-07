@@ -52,21 +52,21 @@
                 list: $('#m-list')
             }
             var dic = eval({{dic|safe}});
-            var html = '';
+            var html = '<input type="text" style="width: 250px"><button type="button" class="btn btn-primary" onclick="del_opt(this)">删除</button>';
             var count = 50;
 
-            for (var i = 0 ; i<dic.main_info.length; i++) {
+            for (var i = 0 ; i<5; i++) {
                 html += '<li class="m-item">';
 
                    html += '<a href="/watch?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank">' +
-                    '<div class="media" style="width: 1000px;height: 240px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                    '<div class="media" style="width: 1000px;height: 240px">' +
                     '<img class="mr-3" src="' + dic.main_info[i].thumbnail + '" style="width: 360px;height: 240px">' +
                     '<div class="media-body">' +
                     '<h5 class="mt-0">' + dic.main_info[i].title.slice(0,100) + '</h5>' +
                     '<p style="font-size: large" class="card-text">'  + ' | 时长 : ' + dic.main_info[i].duration.hour + '</p>' +
                     '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[i].view_count + '</cite> 次观看 | ' + dic.main_info[i].upload_date + '</footer>' +
                     '</div></div></a><br>'+
-                       '<a href="/delete?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank"> 删除 </a>' ;
+                       '<button type="button" class="btn btn-primary" onclick="del(this)" id="'+ dic.main_info[i].video_id +'">删除</button>' ;
 
                       html += '</li>';
 
@@ -81,7 +81,7 @@
                         html += '<li class="m-item">';
                         html +=
                             '<a href="/watch?id=' + dic.main_info[count].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank">' +
-                            '<div class="media" style="width: 1000px;height: 240px" onmouseover="setover(this)" onmouseout="setout(this)">' +
+                            '<div class="media" style="width: 1000px;height: 240px">' +
                             '<img class="mr-3" src="' + dic.main_info[count].thumbnail + '" style="width: 360px;height: 240px">' +
                             '<div class="media-body">' +
                             '<h5 class="mt-0">' + dic.main_info[count].title.slice(0,100) + '</h5>' +
@@ -89,7 +89,7 @@
                             '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[count].view_count + '</cite> 次观看 | ' + dic.main_info[count].upload_date + '</footer>' +
                              '<a href="/delete?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21">' +
                             '</div></div></a>'+
-                                '<a href="/delete?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21" target="_blank"> 删除 </a>' ;
+                                '<button type="button" class="btn btn-primary" onclick="del(this)" id="'+ dic.main_info[i].video_id +'">删除</button>' ;
                         html += '</li>';
                         count++
                     }
@@ -106,20 +106,29 @@
                 interactiveScrollbars:true,  //滚动条可以拖动
                 preventDefault: false, //禁止阻止浏览器默认行为，可以选择文字
             });
-           // myScroll.on('scrollEnd', scrollEndFn);
+            myScroll.on('scrollEnd', scrollEndFn);
         });
+    function del(obj) {
+        var ad_info={};
+        var item = $(obj).parent();
+        ad_info.video_id = $(obj).attr('id');
+        $.post("/admin/video_post?action=delete",ad_info ,
+  function(data,status){
+            if(data==='删除成功'){item.remove()}
+    alert("Data: " + data + "\nStatus: " + status);
+    });
+    }
 
-function setover(obj) {
-    var first=obj.firstElementChild;
-    var temp_img = first.src.slice(0, -4);
-    first.src = temp_img + '.gif'
-}
-
-function setout(obj) {
-    var first=obj.firstElementChild;
-    var temp_img = first.src.slice(0, -4);
-    first.src = temp_img + '.jpg'
-}
+    function del_opt(obj) {
+        var ad_info={};
+        var item = $(obj).prev();
+        ad_info.video_id = $(item).val();
+        $.post("/admin/video_post?action=delete",ad_info ,
+  function(data,status){
+            if(data==='删除成功'){item.remove()}
+    alert("Data: " + data + "\nStatus: " + status);
+    });
+    }
         </script>
 
     </body>
