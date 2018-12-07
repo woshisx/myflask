@@ -1,6 +1,5 @@
-import oss2
+import oss2,os,re
 from itertools import islice
-from myflask import *
 auth = oss2.Auth('LTAI9KoPJsTapdyo', '5kgYBIG3kGTLVjNXMdeOdg5xDZUgOi')
 bucket = oss2.Bucket(auth, 'oss-cn-zhangjiakou.aliyuncs.com', 'my-mixwheel')
 
