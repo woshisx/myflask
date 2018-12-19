@@ -186,7 +186,7 @@ class youtube_link():
             self.db.col.update({'video_id': video_id}, {'$set': {'video_url':'http://www.mixwheel.top/static/oss/video/%s.mp4'%video_id}})
         except:
             print('Downloading ' + video_url + ' failed')
-            self.db.col.remove({'video_id': video_id})
+            # self.db.col.remove({'video_id': video_id})
 
     def update_playlist(self):
         for item in self.db.col.find():
@@ -225,15 +225,19 @@ yt = youtube_link()
 # print(yt.youtube_info('Wr7nlnRq3tU'))
 # yt.search('吉米今夜秀')
 
-# yt.load_list('我是大医生',link='https://www.youtube.com/watch?v=-P8UTJqGR_g&list=PLkLimRXN6NKyN6uITqZCf2Vj_is_noAnf')
+# yt.load_list('Android Kotlin',link='https://www.youtube.com/watch?v=e7WIPwRd2s8&list=PLlxmoA0rQ-Lw5k_QCqVl3rsoJOnb_00UV')
 yt.down_load(video = True)
 
-# pl = ['ZLCw-o_3zvI']
-# yt.keyword='我是大医生'
+
+# pl = ['xQLD7ugzCzA']
+# yt.keyword='中国好医生'
 # yt.prase(pl)
 
 # yt.get_href(keword='科普',link='https://www.youtube.com/channel/UCQxZKi5KM_sgO6Q41o-udcA/videos')
 
 
 
-
+# https://www.youtube.com/watch?v=CBqUjgeeSZE
+# https://www.youtube.com/watch?v=6ZFY5uh1PoQ
+# https://www.youtube.com/watch?v=xQLD7ugzCzA
+# https://www.youtube.com/watch?v=ts1jRsbG7TI
