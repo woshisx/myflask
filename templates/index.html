@@ -186,6 +186,11 @@ function ajust(){
             });
         }
         if (cliWidth<1400 && cliWidth>=1095) {
+            nail.each(function () {
+                $(this).css('width', 266);
+                $(this).css('height', 308);
+                $(this).children("img").css('height', 168);
+            });
         a4.each(function () {
             $(this).hide();
         });
@@ -194,12 +199,18 @@ function ajust(){
             });
         }
          if (cliWidth<1095) {
+            nail.each(function () {
+                $(this).css('width', 266);
+                $(this).css('height', 308);
+                $(this).children("img").css('height', 168);
+            });
         a3.each(function () {
             $(this).hide();
         });
         a4.each(function () {
             $(this).hide();
         });
+
         }
 }
 
