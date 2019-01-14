@@ -152,7 +152,7 @@ def index():
     dic = {}
     main_list = []
     temp_list = []
-    temp_categories = [['People & Blogs'], ['Science & Technology'], ['Education'], ['Music'], ['Entertainment'], ['Comedy'], ['Howto & Style'],['Film & Animation'], ['Sports'], ['Autos & Vehicles'], ['Gaming'], ['News & Politics'], ['Pets & Animals'], ['Nonprofits & Activism'], ['Shows'], ['Travel & Events']]
+    temp_categories = ['人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程']
     temp_categories = random.sample(temp_categories,len(temp_categories))
     # temp_categories = []
     # for each in db.col.find():
