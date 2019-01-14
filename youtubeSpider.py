@@ -106,9 +106,10 @@ class youtube_link():
                 f = open('./static/srt/' + json_dic['id'] + '_' + lan + '.srt', 'w', encoding='utf-8')
                 f.write(temp_srt[lan])
                 f.close()
-                temp_dic[lan] = 'srt/' + json_dic['id'] + '_' + lan + '.srt'
+                temp_dic[lan] = 'http://www.mixwheel.top/static/oss/srt/' + json_dic['id'] + '_' + lan + '.srt'
         except:
             temp_dic['zh-Hans'] = ''
+            temp_dic['en-auto'] = ''
         insert_dic['subtitle'] = temp_dic
         insert_dic['video_url'] = 'https://www.youtube.com/watch?v=' + json_dic['id']
         insert_dic['playlist'] = playlist_id
@@ -172,7 +173,7 @@ class youtube_link():
                     f.close()
                     self.db.col.update({'_id': item['_id']}, {'$set': {'thumbnail': 'http://my-mixwheel.oss-cn-zhangjiakou.aliyuncs.com/images/%s.jpg'%item['video_id']}})
                     print('download ' + item['video_id'] + '.jpg success')
-        for x in video_down_list[:2]:
+        for x in video_down_list[:4]:
             t = threading.Thread(target=self.thread_video, args=(x[0],x[1]))
             t.start()
 
@@ -225,19 +226,13 @@ yt = youtube_link()
 # print(yt.youtube_info('Wr7nlnRq3tU'))
 # yt.search('吉米今夜秀')
 
-# yt.load_list('Android Kotlin',link='https://www.youtube.com/watch?v=e7WIPwRd2s8&list=PLlxmoA0rQ-Lw5k_QCqVl3rsoJOnb_00UV')
-yt.down_load(video = True)
+# yt.load_list('Big Data Hadoop',link='https://www.youtube.com/watch?v=zez2Tv-bcXY&list=PL9ooVrP1hQOFrYxqxb0NJCdCABPZNo0pD')
+yt.down_load(video= True)
 
 
-# pl = ['xQLD7ugzCzA']
-# yt.keyword='中国好医生'
+# pl = ['E-Sm0TttnvQ','JCII3Gs_Pzk','TjvCvwnJ5lc','1JVG-iwIgzg','D-92D7GsAOM']
+# yt.keyword='电影'
 # yt.prase(pl)
 
-# yt.get_href(keword='科普',link='https://www.youtube.com/channel/UCQxZKi5KM_sgO6Q41o-udcA/videos')
+# yt.get_href(keword='科普 ',link='https://www.youtube.com/channel/UCQtwvRQWnT5Buh9hpvNNryQ')
 
-
-
-# https://www.youtube.com/watch?v=CBqUjgeeSZE
-# https://www.youtube.com/watch?v=6ZFY5uh1PoQ
-# https://www.youtube.com/watch?v=xQLD7ugzCzA
-# https://www.youtube.com/watch?v=ts1jRsbG7TI

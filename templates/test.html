@@ -1,18 +1,15 @@
 {% extends 'head.html' %}
 {% block body %}
-<!--框架页面：页面刷新.html-->
- <a class="navbar-brand" href="#" onclick="test(this)" id="1" style="float: left"><img class="rounded-circle" src="../static/images/exchange.jpg" style="width: 40px;height: 40px"></a>
-    <br>
-    <div id="test" style="height:380px">
-    <a href="index.html">
-    <img  src="../static/images/f-10wMyR8BA.gif">
-        <br>
-        <img  src="../static/images/d-XbjFn3aqE.gif">
+<div class="input-group mb-3">
+    <button onclick="setcat(this)"></button>
+    <p></p>
+  <select class="custom-select" about="" style="width: 100px" onchange="categorie(this)" onclick="add_item(this)">
 
-    </a>
-    </div>
-    <script>
+  </select>
+</div>
     
+    <script type="text/javascript">
+    var dic = eval({{dic|safe}});
 	$(function what_device(){
             var sUserAgent = navigator.userAgent.toLowerCase();
             var bIsIpad = sUserAgent.match(/ipad/i) == "ipad";
@@ -33,6 +30,28 @@
               //  window.location = '/login';
                         console.log('PC设备地址');       
                                              }
-     })
+     });
+
+    function categorie(obj) {
+	    var temp = $(obj).val();
+        var ad_info={};
+        alert($(obj).attr('itemid'));
+        {#ad_info.categorie = dic.categorie_info[temp];#}
+        {#ad_info.id = $(obj).attr('itemid');#}
+        {#$.post("/admin/video_post?action=recategorie",ad_info ,#}
+        {#  function(data,status){#}
+        {#    });#}
+    }
+    function setcat(obj){
+        $(obj).next().val(20)
+    }
+    
+    function add_item(obj) {
+	     for (var i = 0 ; i<dic.categorie_info.length; i++) {
+                     $(obj).append('<option value="'+ i +'">'+ dic.categorie_info[i] +'</option>');
+                 }
+                 $(this).val(4);
+        alert($(this).childElementCount)
+    }
      </script>
 {% endblock %}

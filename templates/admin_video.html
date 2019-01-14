@@ -46,14 +46,14 @@
         <div class="footer"></div>
         <script src="../static/iscroll_5.2.0/iscroll.js"></script>
 <script type="text/javascript">
+        var dic = eval({{dic|safe}});
         $(function() {
             var dom = {
                 wrapper: $('#wrapper'),
                 list: $('#m-list')
-            }
-            var dic = eval({{dic|safe}});
+            };
             var html = '<input type="text" style="width: 250px"><button type="button" class="btn btn-primary" onclick="del_opt(this)">删除</button>';
-            var count = 50;
+            var count = 5;
 
             for (var i = 0 ; i<5; i++) {
                 html += '<li class="m-item">';
@@ -66,9 +66,12 @@
                     '<p style="font-size: large" class="card-text">'  + ' | 时长 : ' + dic.main_info[i].duration.hour + '</p>' +
                     '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[i].view_count + '</cite> 次观看 | ' + dic.main_info[i].upload_date + '</footer>' +
                     '</div></div></a><br>'+
-                       '<button type="button" class="btn btn-primary" onclick="del(this)" id="'+ dic.main_info[i].video_id +'">删除</button>' ;
-
-                      html += '</li>';
+                       '<button type="button" class="btn btn-primary" onclick="del(this)" itemid="'+ dic.main_info[i].video_id +'">删除</button>'
+                   + '<select class="custom-select" style="width: 200px" itemid="'+ dic.main_info[i].video_id +'" onchange="categorie(this)">';
+                   for (var k = 0; k < dic.categorie_info.length; k++) {
+                               html +=  '<option value="' + k + '">' + dic.categorie_info[k] + '</option>'
+                            }
+                      html += '</select><p>'+ dic.main_info[i].categories+'</p></li>';
 
             }
             dom.list.html(html);
@@ -87,11 +90,14 @@
                             '<h5 class="mt-0">' + dic.main_info[count].title.slice(0,100) + '</h5>' +
                             '<p style="font-size: large" class="card-text">'  + ' | 时长 : ' + dic.main_info[count].duration.hour + '</p>' +
                             '<footer class="blockquote-footer" style="font-size: medium"><cite title="Source Title">' + dic.main_info[count].view_count + '</cite> 次观看 | ' + dic.main_info[count].upload_date + '</footer>' +
-                             '<a href="/delete?id=' + dic.main_info[i].video_id + '" style="text-decoration:none;color: #1b1e21">' +
                             '</div></div></a>'+
-                                '<button type="button" class="btn btn-primary" onclick="del(this)" id="'+ dic.main_info[i].video_id +'">删除</button>' ;
-                        html += '</li>';
-                        count++
+                                '<button type="button" class="btn btn-primary" onclick="del(this)" itemid="'+ dic.main_info[count].video_id +'">删除</button>'
+                              + '<select class="custom-select" style="width: 200px" itemid="'+ dic.main_info[count].video_id +'" onchange="categorie(this)">';
+                            for (var k = 0; k < dic.categorie_info.length; k++) {
+                               html +=  '<option value="' + k + '">' + dic.categorie_info[k] + '</option>'
+                            }
+                        html += '</select><p>'+ dic.main_info[count].categories+'</p></li>';
+                        count++;
                     }
                     dom.list.append(html);
                     if (myScroll) {
@@ -111,7 +117,7 @@
     function del(obj) {
         var ad_info={};
         var item = $(obj).parent();
-        ad_info.video_id = $(obj).attr('id');
+        ad_info.video_id = $(obj).attr('itemid');
         $.post("/admin/video_post?action=delete",ad_info ,
   function(data,status){
             if(data==='删除成功'){item.remove()}
@@ -125,10 +131,21 @@
         ad_info.video_id = $(item).val();
         $.post("/admin/video_post?action=delete",ad_info ,
   function(data,status){
-            if(data==='删除成功'){item.remove()}
     alert("Data: " + data + "\nStatus: " + status);
     });
     }
+
+    function categorie(obj) {
+	    var temp = $(obj).val();
+        var ad_info={};
+        ad_info.categorie = dic.categorie_info[temp];
+        ad_info.id = $(obj).attr('itemid');
+        $.post("/admin/video_post?action=recategorie",ad_info ,
+          function(data,status){
+           // alert("Data: " + data + "\nStatus: " + status);
+            });
+    }
+
         </script>
 
     </body>

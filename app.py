@@ -36,6 +36,14 @@ def load_user(username):
         curr_user.id = username
         return curr_user
 
+@app.route('/test')
+def test():
+    categorie_info = ['未分类','电影', '动漫', '综艺', '搞笑', '旅行', '音乐', '游戏', '教育', '科学技术', '体育', '预告片', '汽车', '探索发现', '美食']
+    dic = {}
+    dic['categorie_info'] = categorie_info
+    dic = json.dumps(dic)
+    return render_template('test.html',dic=dic)
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -177,40 +185,48 @@ def userValidate():
         return ''
 
 @app.route('/admin/ad',methods=['GET','POST'])
+@login_required
 def ad():
-    dic = []
-    for each in db.ads.find({},{'_id': 0 }):
-        dic.append(each)
-    return render_template('admin_ads.html',dic=dic)
+    if current_user.get_id() == 'admin':
+        dic = []
+        for each in db.ads.find({},{'_id': 0 }):
+            dic.append(each)
+        return render_template('admin_ads.html',dic=dic)
+    else:
+        return 'bye-bye'
 
 @app.route('/admin/ad_post',methods=['POST'])
+@login_required
 def ad_action():
-    action = request.args.get('action')
-    dic = request.form.to_dict()
-    if action == 'insert':
-        try:
-            if not db.ads.find({'ad_id':dic['ad_id']}).count() and dic['ad_id']:
-                db.ads.insert(dic)
-                return '插入成功'
-            else:
-                return '记录已经存在或数据不规范'
-        except:
-            return '插入出错'
-    if action == 'delete':
-        try:
-            if dic:
-                db.ads.remove({'ad_id':dic['ad_id']})
-                return '删除成功'
-        except:
-            return '删除出错'
+    if current_user.get_id() == 'admin':
+        action = request.args.get('action')
+        dic = request.form.to_dict()
+        if action == 'insert':
+            try:
+                if not db.ads.find({'ad_id':dic['ad_id']}).count() and dic['ad_id']:
+                    db.ads.insert(dic)
+                    return '插入成功'
+                else:
+                    return '记录已经存在或数据不规范'
+            except:
+                return '插入出错'
+        if action == 'delete':
+            try:
+                if dic:
+                    db.ads.remove({'ad_id':dic['ad_id']})
+                    return '删除成功'
+            except:
+                return '删除出错'
+    else:
+        return 'bye-bye'
 
 @app.route('/admin/video_post',methods=['GET','POST'])
 @login_required
 def video_action():
     if current_user.get_id() == 'admin':
         action = request.args.get('action')
-        id = request.form.to_dict()['video_id']
         if action =='delete':
+            id = request.form.to_dict()['video_id']
             try:
                 os.remove('./myflask/static/oss/images/%s.jpg'%id)
             except:
@@ -228,7 +244,12 @@ def video_action():
             except:
                 pass
             db.col.remove({'video_id': id})
-        return id+' deleted'
+            return id+' deleted'
+        if action == 'recategorie':
+            info = request.form.to_dict()
+            print(info)
+            db.col.update({'video_id': info['id']}, {'$set': {'categories': info['categorie']}})
+            return info['id'] +' 分类修改为 '+ info['categorie']
     else:
         return 'bye-bye'
 
@@ -237,10 +258,12 @@ def video_action():
 def admin_video():
     if current_user.get_id() == 'admin':
         main_info = []
+        categorie_info = ['未分类','人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程']
         dic = {}
-        for each in db.col.find({},{'_id': 0 }):
+        for each in db.col.find({},{'_id': 0 })[900:]:
             main_info.append(each)
         dic['main_info'] = main_info
+        dic['categorie_info'] = categorie_info
         dic = json.dumps(dic)
         return render_template('admin_video.html', dic=dic)
     else:
