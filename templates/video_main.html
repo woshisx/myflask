@@ -31,7 +31,7 @@
     {% if vi_dic['main_info']['playlist']|length > 1  %}
      <div class="card" style="height: 618px;margin-bottom: 10px">
   <ul class="list-group list-group-flush">
-      <li class="list-group-item" style="height: 80px;background-color:#fafafa"><h2>{{ vi_dic['main_info']['categories'][0] }}</h2></li>
+      <li class="list-group-item" style="height: 80px;background-color:#fafafa"><h3>{{ vi_dic['main_info']['categories'] }}</h3></li>
     <li class="list-group-item" style="background-color:#fafafa;height: 518px;padding-right: 0px">
        <div data-spy="scroll"  class="pre-scrollable" style="max-height: 500px;">
        {% for each in vi_dic['playlist_info'] %}
