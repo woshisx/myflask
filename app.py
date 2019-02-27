@@ -152,7 +152,7 @@ def index():
     dic = {}
     main_list = []
     temp_list = []
-    temp_categories = ['人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程']
+    temp_categories = ['人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程','云计算 人工智能']
     temp_categories = random.sample(temp_categories,len(temp_categories))
     # temp_categories = []
     # for each in db.col.find():
@@ -198,6 +198,7 @@ def ad():
 @app.route('/admin/ad_post',methods=['POST'])
 @login_required
 def ad_action():
+
     if current_user.get_id() == 'admin':
         action = request.args.get('action')
         dic = request.form.to_dict()
@@ -258,7 +259,7 @@ def video_action():
 def admin_video():
     if current_user.get_id() == 'admin':
         main_info = []
-        categorie_info = ['未分类','人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程']
+        categorie_info = ['未分类','人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程','云计算 人工智能']
         dic = {}
         for each in db.col.find({},{'_id': 0 })[900:]:
             main_info.append(each)
