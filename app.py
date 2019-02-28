@@ -99,7 +99,7 @@ def search():
             main_info = []
             temp = []
             for each in db.col.find():
-                choices.append(each['tags'])
+                choices.append(each['title'])
             relate = process.extract(keyword, choices, limit=60, scorer=fuzz.partial_token_set_ratio)
             [temp.append(i) for i in relate if not i in temp]
             for each in temp:
@@ -262,6 +262,8 @@ def admin_video():
         categorie_info = ['未分类','人文地理','深度学习','电影','动漫','综艺','搞笑','旅行','音乐','游戏','教育','科学技术','体育','预告片','汽车','探索发现','美食','编程','云计算 人工智能']
         dic = {}
         for each in db.col.find({},{'_id': 0 })[900:]:
+
+            
             main_info.append(each)
         dic['main_info'] = main_info
         dic['categorie_info'] = categorie_info
