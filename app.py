@@ -103,8 +103,7 @@ def search():
             relate = process.extract(keyword, choices, limit=60, scorer=fuzz.partial_token_set_ratio)
             [temp.append(i) for i in relate if not i in temp]
             for each in temp:
-                main_info.append(db.col.find_one({'title': each}, {'_id': 0}))
-
+                main_info.append(db.col.find_one({'title': each[0]}, {'_id': 0}))
             dic['main_info'] = main_info
             dic = json.dumps(dic)
     return render_template('search.html',dic = dic)
